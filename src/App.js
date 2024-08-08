@@ -1,15 +1,15 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Login from './Pages/Login';
-import RegistrationSuccess from './Pages/RegistrationSuccess';
+import Login from './components/Login';
+import RegistrationSuccess from './components/RegistrationSuccess';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path='/login' element={<Login />} />
-        <Route path='/registration-success' element={<RegistrationSuccess />} />
-        <Route path='/' element={<Login />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/registration-success" element={<RegistrationSuccess />} />
+        <Route path="/" element={<Login />} />
       </Routes>
     </Router>
   );
