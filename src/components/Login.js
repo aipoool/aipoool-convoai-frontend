@@ -3,8 +3,7 @@ import React from 'react';
 function Login() {
 
   const handleGoogleLogin = () => {
-    // Implement Google login logic here
-    console.log('Login with Google');
+    window.open('https://aipoool-convoai-backend.onrender.com/auth/google/callback', '_self');
   };
 
   return (
