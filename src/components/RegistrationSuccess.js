@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+/*global chrome*/ 
+
+var extensionId = 'dnjmipaneoddchfeamgdabpiomihncii'; 
 
 function RegistrationSuccess() {
   const [userdata, setUserdata] = useState({});
@@ -20,8 +23,21 @@ function RegistrationSuccess() {
 
   useEffect(() => {
     fetchSessionData()
-    console.log(`${userMsg} :: `, userdata);
   }, [])
+
+  chrome.runtime.sendMessage(
+    extensionId,
+    {
+      type: "convoai-login-data",
+      info: userdata,
+    },
+    function (response) {
+      if (!response.success) {
+        console.log("error sending message", response);
+        return response;
+      }
+    }
+  );
 
 
   return (
