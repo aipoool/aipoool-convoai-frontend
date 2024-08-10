@@ -1,6 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function RegistrationSuccess() {
+  const [userdata, setUserdata] = useState({});
+
+  const fetchSessionData = async() => {
+    try{
+      const response = await axios.get("https://aipoool-socialscribe-backend.onrender.com/api/login/success", {withCredentials:true});
+      setUserdata(response.data.User);
+      
+    }catch(error){ 
+      console.log("error", error); 
+    }
+  }
+
+  useEffect(() => {
+    fetchSessionData()
+  }, [])
+
+
   return (
     <div style={styles.container}>
       <h2>Registration Successful</h2>
