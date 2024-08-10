@@ -16,6 +16,7 @@ function RegistrationSuccess() {
 
   useEffect(() => {
     fetchSessionData()
+    console.log('The data received at the frontend is: ', userdata);
   }, [])
 
 
