@@ -7,7 +7,7 @@ function RegistrationSuccess() {
 
   const fetchSessionData = async() => {
     try{
-      const response = await axios.get("https://aipoool-convoai-backend.onrender.com/api/login/success", {withCredentials:true});
+      const response = await axios.get("https://aipoool-convoai-backend.onrender.com/auth/login/success", {withCredentials:true});
       setUserdata(response.data.user);
       setUserMsg(response.data.message);
       
