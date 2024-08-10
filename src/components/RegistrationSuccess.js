@@ -3,11 +3,13 @@ import axios from 'axios';
 
 function RegistrationSuccess() {
   const [userdata, setUserdata] = useState({});
+  const [userMsg , setUserMsg] = useState({});
 
   const fetchSessionData = async() => {
     try{
-      const response = await axios.get("https://aipoool-convoai-backend.onrender.com/auth/login/success", {withCredentials:true});
-      setUserdata(response.data.User);
+      const response = await axios.get("https://aipoool-convoai-backend.onrender.com/api/login/success", {withCredentials:true});
+      setUserdata(response.data.user);
+      setUserMsg(response.data.message);
       
     }catch(error){ 
       console.log("error", error); 
@@ -16,7 +18,7 @@ function RegistrationSuccess() {
 
   useEffect(() => {
     fetchSessionData()
-    console.log('The data received at the frontend is: ', userdata);
+    console.log(`${userMsg} :: `, userdata);
   }, [])
 
 
