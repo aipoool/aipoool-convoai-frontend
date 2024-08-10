@@ -8,6 +8,8 @@ function RegistrationSuccess() {
   const fetchSessionData = async() => {
     try{
       const response = await axios.get("https://aipoool-convoai-backend.onrender.com/auth/login/success", {withCredentials:true});
+	  console.log(response.data)
+	  console.log(response)
       setUserdata(response.data.user);
       setUserMsg(response.data.message);
       
@@ -18,7 +20,8 @@ function RegistrationSuccess() {
 
   useEffect(() => {
     fetchSessionData()
-    console.log(`${userMsg} :: `, userdata);
+    console.log(userdata);
+	console.log(userdata);
   }, [])
 
 
