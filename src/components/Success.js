@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const useQuery = () => {
   return new URLSearchParams(window.location.search);
@@ -9,7 +9,7 @@ const PaymentSuccess = () => {
   const query = useQuery();
   const subscriptionId = query.get('subscription_id');
   const [subscriptionDetails, setSubscriptionDetails] = useState(null);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (subscriptionId) {
@@ -49,8 +49,8 @@ const PaymentSuccess = () => {
         </div>
       )}
       <div style={{ marginTop: '20px' }}>
-        <button onClick={() => history.push('/settings')}>Go to Settings Page</button>
-        <button onClick={() => history.push('/')}>Go to Homepage</button>
+        <button onClick={() => navigate.push('/settings')}>Go to Settings Page</button>
+        <button onClick={() => navigate.push('/')}>Go to Homepage</button>
       </div>
     </div>
   );
