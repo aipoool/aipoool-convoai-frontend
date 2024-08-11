@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-// Utility function to extract query parameters
 const useQuery = () => {
   return new URLSearchParams(window.location.search);
 };
@@ -8,7 +7,19 @@ const useQuery = () => {
 const PaymentSuccess = () => {
   const query = useQuery();
   const subscriptionId = query.get('subscription_id');
-  const productName = query.get('product_name');
+  const [subscriptionDetails, setSubscriptionDetails] = useState(null);
+
+  useEffect(() => {
+    if (subscriptionId) {
+      fetch(`https://aipoool-convoai-backend.onrender.com/api/subscription-details/${subscriptionId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Subscription details:', data);
+          setSubscriptionDetails(data);
+        })
+        .catch((error) => console.error('Error fetching subscription details:', error));
+    }
+  }, [subscriptionId]);
 
   return (
     <div>
@@ -17,8 +28,11 @@ const PaymentSuccess = () => {
       {subscriptionId && (
         <p><strong>Subscription ID:</strong> {subscriptionId}</p>
       )}
-      {productName && (
-        <p><strong>Product Name:</strong> {productName}</p>
+      {subscriptionDetails && (
+        <div>
+          <p><strong>Subscription Details:</strong></p>
+          <pre>{JSON.stringify(subscriptionDetails, null, 2)}</pre>
+        </div>
       )}
     </div>
   );
