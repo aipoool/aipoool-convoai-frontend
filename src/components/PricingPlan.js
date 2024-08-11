@@ -13,8 +13,12 @@ const PricingPlan = () => {
         { planId }, // Sending planId in the request body
         { withCredentials: true } // Including credentials in the request
       );
+
+      if (response.data && response.data.paypalUrl) {
+        window.location.href = response.data.paypalUrl; // Redirect to PayPal URL
+      }
   
-      console.log("Subscription successful", response.data);
+      console.log("Subscription successful", response.data.paypalUrl);
       
     } catch (error) {
       console.error("Error during subscription:", error);
