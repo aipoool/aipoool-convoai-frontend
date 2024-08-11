@@ -1,10 +1,24 @@
 import React from 'react';
+import axios from 'axios';
 import '../css/PricingPlan.css';
 
 const PricingPlan = () => {
 
-  const handleSelectPlan = (planType) => {
-    console.log(planType);
+  const handleSelectPlan = async (planType, planId) => {
+    console.log(`Going for ${planType} plan with id ${planId}`);
+  
+    try {
+      const response = await axios.post(
+        "https://aipoool-convoai-backend.onrender.com/api/subscribe",
+        { planId }, // Sending planId in the request body
+        { withCredentials: true } // Including credentials in the request
+      );
+  
+      console.log("Subscription successful", response.data);
+      
+    } catch (error) {
+      console.error("Error during subscription:", error);
+    }
   };
 
   return (
@@ -21,7 +35,7 @@ const PricingPlan = () => {
           </ul>
           <button 
             className="select-plan-btn" 
-            onClick={() => handleSelectPlan('Basic')}
+            onClick={() => handleSelectPlan('Basic' , 'P-55M42500U43143339M23Z5TI')}
           >
             Select Plan
           </button>
@@ -36,7 +50,7 @@ const PricingPlan = () => {
           </ul>
           <button 
             className="select-plan-btn" 
-            onClick={() => handleSelectPlan('Pro')}
+            onClick={() => handleSelectPlan('Pro' , 'P-2DE39443D4956545AM23Z7GY')}
           >
             Select Plan
           </button>
@@ -51,7 +65,7 @@ const PricingPlan = () => {
           </ul>
           <button 
             className="select-plan-btn" 
-            onClick={() => handleSelectPlan('Plus')}
+            onClick={() => handleSelectPlan('Plus' , 'P-5BJ936829D7221634M23Z56Y')}
           >
             Select Plan
           </button>
