@@ -9,7 +9,7 @@ const PricingPlan = () => {
 
   const fetchSessionData = async () => {
     try {
-      const storedData = localStorage.getItem('convoaiUserProfData');
+      const storedData = localStorage.getItem("convoaiUserProfData");
       if (storedData) {
         const userData = JSON.parse(storedData);
         console.log('Retrieved user data from settings page:', userData);
