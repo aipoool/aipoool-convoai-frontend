@@ -117,9 +117,11 @@ const PaymentSuccess = () => {
 
   useEffect(() => {
     getSubscriberDetails();
-    setPaymenDetails(); 
-  }, []);
+  });
 
+  useEffect(() => {
+    setPaymenDetails(); 
+  });
 
 
   // setting the subscription data into the db 
