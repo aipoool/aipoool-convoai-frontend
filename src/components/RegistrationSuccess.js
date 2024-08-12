@@ -6,11 +6,13 @@ var extensionId = 'dnjmipaneoddchfeamgdabpiomihncii';
 
 function RegistrationSuccess() {
   const [userdata, setUserdata] = useState({});
+  const [userjwt, setUserjwt] = useState({});
 
   const fetchSessionData = async() => {
     try{
       const response = await axios.get("https://aipoool-convoai-backend.onrender.com/auth/login/success", {withCredentials:true});
       setUserdata(response.data.user);
+      setUserjwt(response.data.jwtToken); 
       
     }catch(error){ 
       console.log("error", error); 
@@ -26,6 +28,7 @@ function RegistrationSuccess() {
     {
       type: "convoai-login-data",
       info: userdata,
+      jwtToken: userjwt,
     },
     function (response) {
       if (!response.success) {
@@ -35,7 +38,7 @@ function RegistrationSuccess() {
     }
   );
 
-  localStorage.setItem('convoaiUserProfData', JSON.stringify(userdata._id));
+  localStorage.setItem('convoaiUserProfData', JSON.stringify(userjwt));
 
 
   return (

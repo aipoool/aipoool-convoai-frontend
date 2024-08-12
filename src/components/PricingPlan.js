@@ -9,10 +9,12 @@ const PricingPlan = () => {
 
   const fetchSessionData = async () => {
     try {
-      const storedData = localStorage.getItem('convoaiUserProfData');
-      if (storedData) {
-        const userData = JSON.parse(storedData);
-        console.log('Retrieved user data from settings page:', userData);
+      const storedToken = localStorage.getItem('convoaiUserProfData');
+      if (storedToken) {
+        const userToken = JSON.parse(storedToken);
+        console.log('Retrieved user data from settings page:', userToken);
+        const secureToken = `${userToken}c0Nv0AI`;
+        setUserdata(secureToken);
         
         localStorage.removeItem('convoaiUserProfData');
         console.log('User data removed from localStorage');
