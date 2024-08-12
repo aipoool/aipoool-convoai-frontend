@@ -16,8 +16,8 @@ const PricingPlan = () => {
         const secureToken = `${userToken}c0Nv0AI`;
         setUserdata(secureToken);
         
-        localStorage.removeItem('convoaiUserProfData');
-        console.log('User data removed from localStorage');
+        //localStorage.removeItem('convoaiUserProfData');
+        //console.log('User data removed from localStorage');
       } else {
         console.log('No user data found in localStorage');
       }
@@ -69,7 +69,7 @@ const PricingPlan = () => {
   };
 
   useEffect(() => {
-	testFunction(); 
+    testFunction(); 
     fetchSessionData();
   });
 
