@@ -1,7 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-/*global chrome*/ 
 
 const useQuery = () => {
   return new URLSearchParams(window.location.search);
@@ -33,11 +32,11 @@ const PaymentSuccess = () => {
   };
 
 
-  const getSubscriberDetails = useCallback (() => {
+  const getSubscriberDetails = async () => {
 
     if(subscriptionId){
       try{
-        const response = axios.get(`https://aipoool-convoai-backend.onrender.com/api/subscription-details/${subscriptionId}`, 
+        const response = await axios.get(`https://aipoool-convoai-backend.onrender.com/api/subscription-details/${subscriptionId}`, 
           {
             headers: {
               Authorization: `Bearer ${userjwtToken}`, // Send the token in the Authorization header
@@ -53,7 +52,7 @@ const PaymentSuccess = () => {
       }
 
     }
-  } , []);
+  };
 
 
 
@@ -74,10 +73,10 @@ const PaymentSuccess = () => {
   `.trim().replace(/\s*,\s*$/, '');  // Trim any leading/trailing spaces and remove trailing commas if any field is empty
 
 
-  const setPaymenDetails = useCallback (() => {
+  const setPaymenDetails = async () => {
     try {
 
-      const response = axios.post(
+      const response = await axios.post(
         "https://aipoool-convoai-backend.onrender.com/api/setPaymentDetails",
         { planId : userdata.plan_id , 
           subscriptionId: userdata.id , 
@@ -108,7 +107,7 @@ const PaymentSuccess = () => {
     } catch (error) {
       console.error("Error during subscription:", error);
     }
-  }, []);
+  };
 
 
 
@@ -117,7 +116,7 @@ const PaymentSuccess = () => {
     getSubscriberDetails();
     setPaymenDetails(); 
 
-  },[getSubscriberDetails, setPaymenDetails]);
+  });
 
 
 
