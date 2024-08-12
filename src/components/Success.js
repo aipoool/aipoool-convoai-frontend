@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 /*global chrome*/ 
@@ -33,11 +33,11 @@ const PaymentSuccess = () => {
   };
 
 
-  const getSubscriberDetails = async () => {
+  const getSubscriberDetails = useCallback (() => {
 
     if(subscriptionId){
       try{
-        const response = await axios.get(`https://aipoool-convoai-backend.onrender.com/api/subscription-details/${subscriptionId}`, 
+        const response = axios.get(`https://aipoool-convoai-backend.onrender.com/api/subscription-details/${subscriptionId}`, 
           {
             headers: {
               Authorization: `Bearer ${userjwtToken}`, // Send the token in the Authorization header
@@ -53,7 +53,7 @@ const PaymentSuccess = () => {
       }
 
     }
-  };
+  } , []);
 
 
 
@@ -74,10 +74,10 @@ const PaymentSuccess = () => {
   `.trim().replace(/\s*,\s*$/, '');  // Trim any leading/trailing spaces and remove trailing commas if any field is empty
 
 
-  const setPaymenDetails = async () => {
+  const setPaymenDetails = useCallback (() => {
     try {
 
-      const response = await axios.post(
+      const response = axios.post(
         "https://aipoool-convoai-backend.onrender.com/api/setPaymentDetails",
         { planId : userdata.plan_id , 
           subscriptionId: userdata.id , 
@@ -108,7 +108,7 @@ const PaymentSuccess = () => {
     } catch (error) {
       console.error("Error during subscription:", error);
     }
-  };
+  }, []);
 
 
 
@@ -117,15 +117,6 @@ const PaymentSuccess = () => {
     getSubscriberDetails();
     setPaymenDetails(); 
 
-    // if (subscriptionId) {
-    //   fetch(`https://aipoool-convoai-backend.onrender.com/api/subscription-details/${subscriptionId}`)
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //       console.log('Subscription details:', data);
-    //       setSubscriptionDetails(data);
-    //     })
-    //     .catch((error) => console.error('Error fetching subscription details:', error));
-    // }
   },[getSubscriberDetails, setPaymenDetails]);
 
 
