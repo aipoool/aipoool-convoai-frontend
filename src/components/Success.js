@@ -113,10 +113,12 @@ const PaymentSuccess = () => {
 
   useEffect(() => {
     fetchSessionData();
+  });
+
+  useEffect(() => {
     getSubscriberDetails();
     setPaymenDetails(); 
-
-  });
+  }, []);
 
 
 
