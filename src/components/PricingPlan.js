@@ -8,19 +8,22 @@ const PricingPlan = () => {
   const [userdata, setUserdata] = useState({}); 
 
   const fetchSessionData = async () => {
-    chrome.storage.local.get('convoaiUserProfData', function(result) {
-      const userData = result.convoaiUserProfData;
-      if (userData) {
+    try {
+      const storedData = localStorage.getItem('convoaiUserProfData');
+      if (storedData) {
+        const userData = JSON.parse(storedData);
         console.log('Retrieved user data from settings page:', userData);
+        
         // Handle the user data as needed
         // Optionally, clear the data after use
-        chrome.storage.local.remove('convoaiUserProfData', function() {
-          console.log('User data removed from storage');
-        });
+        localStorage.removeItem('convoaiUserProfData');
+        console.log('User data removed from localStorage');
       } else {
-        console.log('No user data found');
+        console.log('No user data found in localStorage');
       }
-    });
+    } catch (error) {
+      console.error('Error fetching session data:', error);
+    }
   };
 
   const handleSelectPlan = async (planType, planId) => {
