@@ -15,7 +15,7 @@ const PaymentSuccess = () => {
   const navigate = useNavigate();
 
   const fetchSessionData = async() => {
-    chrome.runtime.onMessage.addListener(
+    chrome.runtime.onMessageExternal.addListener(
       function(request, sender, sendResponse) {
         if (request.action === 'convoai-data-from-settings'){
           console.log('Requested user data here from settings page ::: ' , request.data); 
