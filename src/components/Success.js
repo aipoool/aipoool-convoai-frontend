@@ -32,9 +32,12 @@ const PaymentSuccess = () => {
     }
   };
 
+
   const getSubscriberDetails = async () => {
 
     if(subscriptionId){
+      console.log('Subscription Id :: ' , subscriptionId); 
+      console.log('User JWT Token :: ' , userjwtToken)
       try{
         const response = await axios.get(`https://aipoool-convoai-backend.onrender.com/api/subscription-details/${subscriptionId}`, 
           {
@@ -94,7 +97,7 @@ const PaymentSuccess = () => {
         }, // Sending planId in the request body
         {
           headers: {
-            Authorization: `Bearer ${userdata}`, // Send the token in the Authorization header
+            Authorization: `Bearer ${userjwtToken}`, // Send the token in the Authorization header
           },
           withCredentials: true, // Include credentials if necessary (cookies, etc.)
         }
