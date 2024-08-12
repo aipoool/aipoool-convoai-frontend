@@ -69,6 +69,7 @@ const PricingPlan = () => {
   };
 
   useEffect(() => {
+	testFunction(); 
     fetchSessionData();
   });
 
