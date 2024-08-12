@@ -7,17 +7,20 @@ const PricingPlan = () => {
 
   const [userdata, setUserdata] = useState({}); 
 
-  const fetchSessionData = async() => {
-    chrome.runtime.onMessage.addListener(
-      function(request, sender, sendResponse) {
-        if (request.action === 'convoai-data-from-settings'){
-          console.log('Requested user data here from settings page ::: ' , request.data); 
-          setUserdata(request.data);
-        }
-          
+  const fetchSessionData = async () => {
+    const port = chrome.runtime.connect({ name: 'convoai-pricing-page' });
+  
+    // Request user data from the background script
+    port.postMessage({ action: 'request-user-data' });
+  
+    // Listen for the response from the background script
+    port.onMessage.addListener((msg) => {
+      if (msg.action === 'send-user-data') {
+        console.log('Received user data from settings page:', msg.data);
+        // Handle the user data as needed
       }
-    );
-  }
+    });
+  };
 
   const handleSelectPlan = async (planType, planId) => {
     console.log(`Going for ${planType} plan with id ${planId}`);
