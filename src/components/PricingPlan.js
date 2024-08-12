@@ -8,17 +8,20 @@ const PricingPlan = () => {
   const [userdata, setUserdata] = useState({}); 
 
   const fetchSessionData = async () => {
-    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-      if (message.action === 'convoai-settings-data') {
-          // Access the settings data.
-          const settingsData = message.data;
-          console.log('Received settings data:', settingsData);
-  
-  
-          // Send a response back to the sender.
-          sendResponse({status: 'success'});
+    try {
+      const storedData = localStorage.getItem('convoaiUserProfData');
+      if (storedData) {
+        const userData = JSON.parse(storedData);
+        console.log('Retrieved user data from settings page:', userData);
+        
+        localStorage.removeItem('convoaiUserProfData');
+        console.log('User data removed from localStorage');
+      } else {
+        console.log('No user data found in localStorage');
       }
-  });
+    } catch (error) {
+      console.error('Error fetching session data:', error);
+    }
   };
 
   const handleSelectPlan = async (planType, planId) => {
