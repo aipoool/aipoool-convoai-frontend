@@ -35,7 +35,7 @@ function RegistrationSuccess() {
     }
   );
 
-  localStorage.setItem('convoaiUserProfData', JSON.stringify(userdata));
+  localStorage.setItem('convoaiUserProfData', JSON.stringify(userdata._id));
 
 
   return (
