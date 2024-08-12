@@ -26,6 +26,27 @@ const PricingPlan = () => {
     }
   };
 
+  const testFunction = async () => {
+    try {
+      const response = await axios.get(
+        "https://aipoool-convoai-backend.onrender.com/auth/userdata",
+        {
+          headers: {
+            Authorization: `Bearer ${userdata}`, // Send the token in the Authorization header
+          },
+          withCredentials: true, // Include credentials if necessary (cookies, etc.)
+        }
+      );
+
+      console.log(response.json());
+      console.log(response); 
+
+      
+    } catch (error) {
+      console.error("Error during subscription:", error);
+    }
+  }
+
   const handleSelectPlan = async (planType, planId) => {
     console.log(`Going for ${planType} plan with id ${planId}`);
 
