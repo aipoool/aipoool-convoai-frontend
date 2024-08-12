@@ -55,7 +55,6 @@ const PaymentSuccess = () => {
     }
   };
 
-  console.log(userdata);
 
 
     const paymentEmail = userdata?.subscriber?.email_address;
@@ -74,8 +73,7 @@ const PaymentSuccess = () => {
     ${userdata?.subscriber?.shipping_address?.address?.country_code || ''}
   `.trim().replace(/\s*,\s*$/, '');  // Trim any leading/trailing spaces and remove trailing commas if any field is empty
 
-  console.log(userdata.subscriber.payer_id); 
-  console.log(userdata.subscriber);
+
   const setPaymenDetails = async () => {
     try {
 
@@ -128,7 +126,7 @@ const PaymentSuccess = () => {
     //     })
     //     .catch((error) => console.error('Error fetching subscription details:', error));
     // }
-  },[]);
+  },[getSubscriberDetails, setPaymenDetails]);
 
 
 
