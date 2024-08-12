@@ -69,13 +69,12 @@ const PaymentSuccess = () => {
   console.log(userdata);
 
 
-    // Example mapping (adjust based on your actual backend response structure)
-    // const paymentEmail = subscriptionDetails?.subscriber?.email_address;
-    // const subscriptionStartDate = subscriptionDetails?.start_time;
-    // const nextBillingDate = subscriptionDetails?.billing_info?.next_billing_time;
-    // const amountPaid = subscriptionDetails?.billing_info?.last_payment?.amount?.value;
-    // const planType = subscriptionDetails?.plan_name;
-    // const planDescription = subscriptionDetails?.plan_description; 
+    const paymentEmail = userdata?.subscriber?.email_address;
+    const subscriptionStartDate = userdata?.start_time;
+    const nextBillingDate = userdata?.billing_info?.next_billing_time;
+    const amountPaid = userdata?.billing_info?.last_payment?.amount?.value;
+    const planType = userdata?.plan_name;
+    const planDescription = userdata?.plan_description; 
 
 
 
@@ -106,7 +105,7 @@ const PaymentSuccess = () => {
       {subscriptionId && (
         <p><strong>Subscription ID:</strong> {subscriptionId}</p>
       )}
-      {subscriptionDetails && (
+      {userdata && (
         <div>
           <p><strong>Payment Email:</strong> {paymentEmail}</p>
           <p><strong>Subscription Start Date:</strong> {new Date(subscriptionStartDate).toLocaleString()}</p>
