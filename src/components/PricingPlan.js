@@ -38,7 +38,6 @@ const PricingPlan = () => {
         }
       );
 
-      console.log(response.json());
       console.log(response); 
 
       
