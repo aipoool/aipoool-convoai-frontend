@@ -10,48 +10,91 @@ const useQuery = () => {
 const PaymentSuccess = () => {
   const query = useQuery();
   const subscriptionId = query.get('subscription_id');
-  const [subscriptionDetails, setSubscriptionDetails] = useState(null);
   const navigate = useNavigate();
 
   const [userdata, setUserdata] = useState({}); 
+  const [userjwtToken, setUserjwt] = useState({}); 
 
   const fetchSessionData = async () => {
-    chrome.storage.local.get('convoaiUserProfData', function(result) {
-      const userData = result.convoaiUserProfData;
-      if (userData) {
-        console.log('Retrieved user data from settings page:', userData);
-        // Handle the user data as needed
-        // Optionally, clear the data after use
-        chrome.storage.local.remove('convoaiUserProfData', function() {
-          console.log('User data removed from storage');
-        });
+    try {
+      const storedToken = localStorage.getItem('convoaiUserProfData');
+      if (storedToken) {
+        const userToken = JSON.parse(storedToken);
+        console.log('Retrieved user data from settings page:', userToken);
+        const secureToken = `${userToken}c0Nv0AI`;
+        setUserjwt(secureToken);
+        
       } else {
-        console.log('No user data found');
+        console.log('No user data found in localStorage');
       }
-    });
+    } catch (error) {
+      console.error('Error fetching session data:', error);
+    }
   };
+
+  const getSubscriberDetails = async () => {
+
+    // if (subscriptionId) {
+    //   fetch(`https://aipoool-convoai-backend.onrender.com/api/subscription-details/${subscriptionId}`)
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //       console.log('Subscription details:', data);
+    //       setSubscriptionDetails(data);
+    //     })
+    //     .catch((error) => console.error('Error fetching subscription details:', error));
+    // }
+
+
+    if(subscriptionId){
+      try{
+        const response = await axios.get(`https://aipoool-convoai-backend.onrender.com/api/subscription-details/${subscriptionId}`, 
+          {
+            headers: {
+              Authorization: `Bearer ${userjwtToken}`, // Send the token in the Authorization header
+            },
+            withCredentials: true, // Include credentials if necessary (cookies, etc.)
+          });
+
+          console.log(response);
+        setUserdata(response.data.user);
+         
+        
+      }catch(error){ 
+        console.log("error", error); 
+      }
+
+    }
+  };
+
+  console.log(userdata);
+
+
+    // Example mapping (adjust based on your actual backend response structure)
+    // const paymentEmail = subscriptionDetails?.subscriber?.email_address;
+    // const subscriptionStartDate = subscriptionDetails?.start_time;
+    // const nextBillingDate = subscriptionDetails?.billing_info?.next_billing_time;
+    // const amountPaid = subscriptionDetails?.billing_info?.last_payment?.amount?.value;
+    // const planType = subscriptionDetails?.plan_name;
+    // const planDescription = subscriptionDetails?.plan_description; 
+
 
 
   useEffect(() => {
     fetchSessionData();
-    if (subscriptionId) {
-      fetch(`https://aipoool-convoai-backend.onrender.com/api/subscription-details/${subscriptionId}`)
-        .then((response) => response.json())
-        .then((data) => {
-          console.log('Subscription details:', data);
-          setSubscriptionDetails(data);
-        })
-        .catch((error) => console.error('Error fetching subscription details:', error));
-    }
+    getSubscriberDetails();
+
+    // if (subscriptionId) {
+    //   fetch(`https://aipoool-convoai-backend.onrender.com/api/subscription-details/${subscriptionId}`)
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //       console.log('Subscription details:', data);
+    //       setSubscriptionDetails(data);
+    //     })
+    //     .catch((error) => console.error('Error fetching subscription details:', error));
+    // }
   }, [subscriptionId]);
 
-  // Example mapping (adjust based on your actual backend response structure)
-  const paymentEmail = subscriptionDetails?.subscriber?.email_address;
-  const subscriptionStartDate = subscriptionDetails?.start_time;
-  const nextBillingDate = subscriptionDetails?.billing_info?.next_billing_time;
-  const amountPaid = subscriptionDetails?.billing_info?.last_payment?.amount?.value;
-  const planType = subscriptionDetails?.plan_name;
-  const planDescription = subscriptionDetails?.plan_description; 
+
 
   // setting the subscription data into the db 
 
