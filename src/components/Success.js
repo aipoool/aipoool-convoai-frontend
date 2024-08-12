@@ -34,17 +34,6 @@ const PaymentSuccess = () => {
 
   const getSubscriberDetails = async () => {
 
-    // if (subscriptionId) {
-    //   fetch(`https://aipoool-convoai-backend.onrender.com/api/subscription-details/${subscriptionId}`)
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //       console.log('Subscription details:', data);
-    //       setSubscriptionDetails(data);
-    //     })
-    //     .catch((error) => console.error('Error fetching subscription details:', error));
-    // }
-
-
     if(subscriptionId){
       try{
         const response = await axios.get(`https://aipoool-convoai-backend.onrender.com/api/subscription-details/${subscriptionId}`, 
@@ -55,8 +44,7 @@ const PaymentSuccess = () => {
             withCredentials: true, // Include credentials if necessary (cookies, etc.)
           });
 
-          console.log(response);
-        setUserdata(response.data.user);
+        setUserdata(response.data);
          
         
       }catch(error){ 
@@ -76,11 +64,58 @@ const PaymentSuccess = () => {
     const planType = userdata?.plan_name;
     const planDescription = userdata?.plan_description; 
 
+    const subscriberAddress = `
+    ${userdata?.subscriber?.shipping_address?.address?.address_line_1 || ''}, 
+    ${userdata?.subscriber?.shipping_address?.address?.address_line_2 || ''}, 
+    ${userdata?.subscriber?.shipping_address?.address?.admin_area_2 || ''}, 
+    ${userdata?.subscriber?.shipping_address?.address?.admin_area_1 || ''}, 
+    ${userdata?.subscriber?.shipping_address?.address?.postal_code || ''}, 
+    ${userdata?.subscriber?.shipping_address?.address?.country_code || ''}
+  `.trim().replace(/\s*,\s*$/, '');  // Trim any leading/trailing spaces and remove trailing commas if any field is empty
+
+
+  const setPaymenDetails = async () => {
+    try {
+
+      const response = await axios.post(
+        "https://aipoool-convoai-backend.onrender.com/api/setPaymentDetails",
+        { planId : userdata.plan_id , 
+          subscriptionId: userdata.id , 
+          planType: userdata.plan_name, 
+          planDescription: userdata.plan_description,
+          planStatus: userdata.status, 
+          statusUpdateTime: userdata.status_update_time,
+          startTime: userdata.start_time, 
+          nextBillTime: userdata?.billing_info?.next_billing_time, 
+          paymentEmail: userdata?.subscriber?.email_address, 
+          subscriberAddress: subscriberAddress, 
+          subscriberId: userdata.subscriber.payer_id, 
+        }, // Sending planId in the request body
+        {
+          headers: {
+            Authorization: `Bearer ${userdata}`, // Send the token in the Authorization header
+          },
+          withCredentials: true, // Include credentials if necessary (cookies, etc.)
+        }
+      );
+  
+      if (response.data && response.data.paypalUrl) {
+        window.location.href = response.data.paypalUrl; // Redirect to PayPal URL
+      }
+  
+      console.log("Subscription successful", response.data.paypalUrl);
+  
+    } catch (error) {
+      console.error("Error during subscription:", error);
+    }
+  };
+
 
 
   useEffect(() => {
     fetchSessionData();
     getSubscriberDetails();
+    setPaymenDetails(); 
 
     // if (subscriptionId) {
     //   fetch(`https://aipoool-convoai-backend.onrender.com/api/subscription-details/${subscriptionId}`)
@@ -91,7 +126,7 @@ const PaymentSuccess = () => {
     //     })
     //     .catch((error) => console.error('Error fetching subscription details:', error));
     // }
-  }, [subscriptionId]);
+  });
 
 
 
