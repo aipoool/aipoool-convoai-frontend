@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+/*global chrome*/ 
 
 const useQuery = () => {
   return new URLSearchParams(window.location.search);
@@ -14,14 +15,17 @@ const PaymentSuccess = () => {
   const navigate = useNavigate();
 
   const fetchSessionData = async() => {
-    try{
-      const response = await axios.get("https://aipoool-convoai-backend.onrender.com/auth/userdata", {withCredentials:true});
-      setUserdata(response.data);
-      
-    }catch(error){ 
-      console.log("error", error); 
-    }
+    chrome.runtime.onMessage.addListener(
+      function(request, sender, sendResponse) {
+        if (request.action === 'convoai-data-from-settings'){
+          console.log('Requested user data here from settings page ::: ' , request.data); 
+          sendResponse({farewell: "goodbye"});
+        }
+          
+      }
+    );
   }
+
 
   useEffect(() => {
     fetchSessionData();
