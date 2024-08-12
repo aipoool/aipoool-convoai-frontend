@@ -16,7 +16,7 @@ const PaymentSuccess = () => {
       fetch(`https://aipoool-convoai-backend.onrender.com/api/subscription-details/${subscriptionId}`)
         .then((response) => response.json())
         .then((data) => {
-          // console.log('Subscription details:', data);
+          console.log('Subscription details:', data);
           setSubscriptionDetails(data);
         })
         .catch((error) => console.error('Error fetching subscription details:', error));
