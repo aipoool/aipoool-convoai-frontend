@@ -13,8 +13,27 @@ const PaymentSuccess = () => {
   const [subscriptionDetails, setSubscriptionDetails] = useState(null);
   const navigate = useNavigate();
 
+  const [userdata, setUserdata] = useState({}); 
+
+  const fetchSessionData = async () => {
+    chrome.storage.local.get('convoaiUserProfData', function(result) {
+      const userData = result.convoaiUserProfData;
+      if (userData) {
+        console.log('Retrieved user data from settings page:', userData);
+        // Handle the user data as needed
+        // Optionally, clear the data after use
+        chrome.storage.local.remove('convoaiUserProfData', function() {
+          console.log('User data removed from storage');
+        });
+      } else {
+        console.log('No user data found');
+      }
+    });
+  };
+
 
   useEffect(() => {
+    fetchSessionData();
     if (subscriptionId) {
       fetch(`https://aipoool-convoai-backend.onrender.com/api/subscription-details/${subscriptionId}`)
         .then((response) => response.json())

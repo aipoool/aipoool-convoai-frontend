@@ -8,16 +8,17 @@ const PricingPlan = () => {
   const [userdata, setUserdata] = useState({}); 
 
   const fetchSessionData = async () => {
-    const port = chrome.runtime.connect({ name: 'convoai-pricing-page' });
-  
-    // Request user data from the background script
-    port.postMessage({ action: 'request-user-data' });
-  
-    // Listen for the response from the background script
-    port.onMessage.addListener((msg) => {
-      if (msg.action === 'send-user-data') {
-        console.log('Received user data from settings page:', msg.data);
+    chrome.storage.local.get('convoaiUserProfData', function(result) {
+      const userData = result.convoaiUserProfData;
+      if (userData) {
+        console.log('Retrieved user data from settings page:', userData);
         // Handle the user data as needed
+        // Optionally, clear the data after use
+        chrome.storage.local.remove('convoaiUserProfData', function() {
+          console.log('User data removed from storage');
+        });
+      } else {
+        console.log('No user data found');
       }
     });
   };
