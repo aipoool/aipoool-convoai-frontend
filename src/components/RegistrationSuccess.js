@@ -35,6 +35,13 @@ function RegistrationSuccess() {
     }
   );
 
+  chrome.runtime.sendMessage({
+    type: "convoai-settigns-data",
+    info: userdata,
+}, (response) => {
+    console.log('Settings data sent successfully!', response);
+});
+
 
   return (
     <div style={styles.container}>
