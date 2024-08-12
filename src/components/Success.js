@@ -54,25 +54,6 @@ const PaymentSuccess = () => {
     }
   };
 
-
-
-    const paymentEmail = userdata?.subscriber?.email_address;
-    const subscriptionStartDate = userdata?.start_time;
-    const nextBillingDate = userdata?.billing_info?.next_billing_time;
-    const amountPaid = userdata?.billing_info?.last_payment?.amount?.value;
-    const planType = userdata?.plan_name;
-    const planDescription = userdata?.plan_description; 
-
-    const subscriberAddress = `
-    ${userdata?.subscriber?.shipping_address?.address?.address_line_1 || ''}, 
-    ${userdata?.subscriber?.shipping_address?.address?.address_line_2 || ''}, 
-    ${userdata?.subscriber?.shipping_address?.address?.admin_area_2 || ''}, 
-    ${userdata?.subscriber?.shipping_address?.address?.admin_area_1 || ''}, 
-    ${userdata?.subscriber?.shipping_address?.address?.postal_code || ''}, 
-    ${userdata?.subscriber?.shipping_address?.address?.country_code || ''}
-  `.trim().replace(/\s*,\s*$/, '');  // Trim any leading/trailing spaces and remove trailing commas if any field is empty
-
-
   const setPaymenDetails = async () => {
     try {
 
@@ -109,19 +90,39 @@ const PaymentSuccess = () => {
     }
   };
 
+  const paymentEmail = userdata?.subscriber?.email_address;
+  const subscriptionStartDate = userdata?.start_time;
+  const nextBillingDate = userdata?.billing_info?.next_billing_time;
+  const amountPaid = userdata?.billing_info?.last_payment?.amount?.value;
+  const planType = userdata?.plan_name;
+  const planDescription = userdata?.plan_description; 
+
+  const subscriberAddress = `
+  ${userdata?.subscriber?.shipping_address?.address?.address_line_1 || ''}, 
+  ${userdata?.subscriber?.shipping_address?.address?.address_line_2 || ''}, 
+  ${userdata?.subscriber?.shipping_address?.address?.admin_area_2 || ''}, 
+  ${userdata?.subscriber?.shipping_address?.address?.admin_area_1 || ''}, 
+  ${userdata?.subscriber?.shipping_address?.address?.postal_code || ''}, 
+  ${userdata?.subscriber?.shipping_address?.address?.country_code || ''}
+`.trim().replace(/\s*,\s*$/, '');  // Trim any leading/trailing spaces and remove trailing commas if any field is empty
 
 
-  useEffect(() => {
-    fetchSessionData();
-  });
 
-  useEffect(() => {
+useEffect(() => {
+  fetchSessionData();
+}, []); // Run only once when the component mounts
+
+useEffect(() => {
+  if (userjwtToken) {
     getSubscriberDetails();
-  });
+  }
+}, [userjwtToken, subscriptionId]); // Run when userjwtToken and subscriptionId are available
 
-  useEffect(() => {
-    setPaymenDetails(); 
-  });
+useEffect(() => {
+  if (userdata && Object.keys(userdata).length > 0) {
+    setPaymenDetails();
+  }
+}, [userdata]); // Run when userdata is populated
 
 
   // setting the subscription data into the db 
