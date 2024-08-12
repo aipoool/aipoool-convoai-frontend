@@ -16,8 +16,6 @@ const PricingPlan = () => {
         const secureToken = `${userToken}c0Nv0AI`;
         setUserdata(secureToken);
         
-        //localStorage.removeItem('convoaiUserProfData');
-        //console.log('User data removed from localStorage');
       } else {
         console.log('No user data found in localStorage');
       }
@@ -26,10 +24,16 @@ const PricingPlan = () => {
     }
   };
 
-  const testFunction = async () => {
+
+
+  const handleSelectPlan = async (planType, planId) => {
+    console.log(`Going for ${planType} plan with id ${planId}`);
+  
     try {
-      const response = await axios.get(
-        "https://aipoool-convoai-backend.onrender.com/auth/userdata",
+
+      const response = await axios.post(
+        "https://aipoool-convoai-backend.onrender.com/api/subscribe",
+        { planId }, // Sending planId in the request body
         {
           headers: {
             Authorization: `Bearer ${userdata}`, // Send the token in the Authorization header
@@ -37,38 +41,20 @@ const PricingPlan = () => {
           withCredentials: true, // Include credentials if necessary (cookies, etc.)
         }
       );
-
-      console.log(response); 
-
-      
-    } catch (error) {
-      console.error("Error during subscription:", error);
-    }
-  }
-
-  const handleSelectPlan = async (planType, planId) => {
-    console.log(`Going for ${planType} plan with id ${planId}`);
-
-    try {
-      const response = await axios.post(
-        "https://aipoool-convoai-backend.onrender.com/api/subscribe",
-        { planId }, // Sending planId in the request body
-        { withCredentials: true } // Including credentials in the request
-      );
-
+  
       if (response.data && response.data.paypalUrl) {
         window.location.href = response.data.paypalUrl; // Redirect to PayPal URL
       }
   
       console.log("Subscription successful", response.data.paypalUrl);
-      
+  
     } catch (error) {
       console.error("Error during subscription:", error);
     }
   };
+  
 
   useEffect(() => {
-    testFunction(); 
     fetchSessionData();
   });
 
