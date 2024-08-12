@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const useQuery = () => {
@@ -9,9 +10,22 @@ const PaymentSuccess = () => {
   const query = useQuery();
   const subscriptionId = query.get('subscription_id');
   const [subscriptionDetails, setSubscriptionDetails] = useState(null);
+  const [userdata, setUserdata] = useState({});
   const navigate = useNavigate();
 
+  const fetchSessionData = async() => {
+    try{
+      const response = await axios.get("https://aipoool-convoai-backend.onrender.com/auth/userdata", {withCredentials:true});
+      setUserdata(response.data);
+      
+    }catch(error){ 
+      console.log("error", error); 
+    }
+  }
+
   useEffect(() => {
+    fetchSessionData();
+    console.log(userdata); 
     if (subscriptionId) {
       fetch(`https://aipoool-convoai-backend.onrender.com/api/subscription-details/${subscriptionId}`)
         .then((response) => response.json())
@@ -30,6 +44,9 @@ const PaymentSuccess = () => {
   const amountPaid = subscriptionDetails?.billing_info?.last_payment?.amount?.value;
   const planType = subscriptionDetails?.plan_name;
   const planDescription = subscriptionDetails?.plan_description; 
+
+  // setting the subscription data into the db 
+
 
   return (
     <div>
