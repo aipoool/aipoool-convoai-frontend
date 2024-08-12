@@ -43,7 +43,8 @@ const PaymentSuccess = () => {
             },
             withCredentials: true, // Include credentials if necessary (cookies, etc.)
           });
-
+		  
+		console.log(response.data); 
         setUserdata(response.data);
          
         
