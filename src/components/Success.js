@@ -11,25 +11,10 @@ const PaymentSuccess = () => {
   const query = useQuery();
   const subscriptionId = query.get('subscription_id');
   const [subscriptionDetails, setSubscriptionDetails] = useState(null);
-  const [userdata, setUserdata] = useState({});
   const navigate = useNavigate();
-
-  const fetchSessionData = async() => {
-    chrome.runtime.onMessageExternal.addListener(
-      function(request, sender, sendResponse) {
-        if (request.action === 'convoai-data-from-settings'){
-          console.log('Requested user data here from settings page ::: ' , request.data); 
-          sendResponse({farewell: "goodbye"});
-        }
-          
-      }
-    );
-  }
 
 
   useEffect(() => {
-    fetchSessionData();
-    console.log(userdata); 
     if (subscriptionId) {
       fetch(`https://aipoool-convoai-backend.onrender.com/api/subscription-details/${subscriptionId}`)
         .then((response) => response.json())

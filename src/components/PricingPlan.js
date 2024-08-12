@@ -1,12 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../css/PricingPlan.css';
+/*global chrome*/ 
 
 const PricingPlan = () => {
 
+  const [userdata, setUserdata] = useState({}); 
+
+  const fetchSessionData = async() => {
+    chrome.runtime.onMessage.addListener(
+      function(request, sender, sendResponse) {
+        if (request.action === 'convoai-data-from-settings'){
+          console.log('Requested user data here from settings page ::: ' , request.data); 
+          setUserdata(request.data);
+        }
+          
+      }
+    );
+  }
+
   const handleSelectPlan = async (planType, planId) => {
     console.log(`Going for ${planType} plan with id ${planId}`);
-  
+
     try {
       const response = await axios.post(
         "https://aipoool-convoai-backend.onrender.com/api/subscribe",
@@ -24,6 +39,10 @@ const PricingPlan = () => {
       console.error("Error during subscription:", error);
     }
   };
+
+  useEffect(() => {
+    fetchSessionData();
+  });
 
   return (
     <div className="pricing-page">
