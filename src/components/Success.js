@@ -43,8 +43,9 @@ const PaymentSuccess = () => {
             },
             withCredentials: true, // Include credentials if necessary (cookies, etc.)
           });
-		  
-		console.log(response.data); 
+        
+
+        console.log("User data here ::: " , response.data); 
         setUserdata(response.data);
          
         
@@ -90,6 +91,8 @@ const PaymentSuccess = () => {
       console.error("Error during subscription:", error);
     }
   };
+
+  console.log("userdata here ::: " , userdata); 
 
   const paymentEmail = userdata?.subscriber?.email_address;
   const subscriptionStartDate = userdata?.start_time;
@@ -148,7 +151,8 @@ useEffect(() => {
       )}
       <div style={{ marginTop: '20px' }}>
         <button onClick={() => navigate.push('/settings')}>Go to Settings Page</button>
-        <button onClick={() => navigate.push('/')}>Go to Homepage</button>
+        <button onClick={() => navigate.push('/settings')}>Print Receipt</button>
+        <button onClick={() => navigate('/unsubscribe')}>Unsubscribe</button>
       </div>
     </div>
   );
