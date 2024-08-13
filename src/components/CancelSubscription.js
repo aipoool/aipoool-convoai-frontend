@@ -1,8 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+
+const useQuery = () => {
+    return new URLSearchParams(window.location.search);
+  };
 
 const CancelSubscription = () => {
   const [reason, setReason] = useState('');
   const [otherReason, setOtherReason] = useState('');
+  const [userjwtToken, setUserjwt] = useState({}); 
+
+  const query = useQuery();
+  const subscriptionId = query.get('subscription_id');
+  let selectedReason; 
+
+  const fetchSessionData = async () => {
+    try {
+      const storedToken = localStorage.getItem('convoaiUserProfData');
+      if (storedToken) {
+        const userToken = JSON.parse(storedToken);
+        console.log('Retrieved user data from settings page:', userToken);
+        const secureToken = `${userToken}c0Nv0AI`;
+        setUserjwt(secureToken);
+
+        localStorage.removeItem('convoaiUserProfData');
+        
+      } else {
+        console.log('No user data found in localStorage');
+      }
+    } catch (error) {
+      console.error('Error fetching session data:', error);
+    }
+  };
 
   const handleReasonChange = (e) => {
     setReason(e.target.value);
@@ -16,10 +45,38 @@ const CancelSubscription = () => {
   };
 
   const handleSubmit = () => {
-    const selectedReason = reason === 'Others' ? otherReason : reason;
+    selectedReason = reason === 'Others' ? otherReason : reason;
     console.log('Cancellation reason:', selectedReason);
     // You can add further processing here, such as sending the reason to a backend
+    setCancelSubscription(); 
   };
+
+  const setCancelSubscription = async () => {
+    try {
+
+      const response = await axios.post(
+        "https://aipoool-convoai-backend.onrender.com/api/unsubscribe",
+        { 
+            subscriptionId: subscriptionId , 
+            reasonToUnsubscribe : selectedReason,
+        }, 
+        {
+          headers: {
+            Authorization: `Bearer ${userjwtToken}`, // Send the token in the Authorization header
+          },
+          withCredentials: true, // Include credentials if necessary (cookies, etc.)
+        }
+      );
+  
+  
+    } catch (error) {
+      console.error("Error during subscription:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchSessionData();
+  }, []); // Run only once when the component mounts
 
   return (
     <div>

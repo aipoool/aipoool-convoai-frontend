@@ -152,7 +152,7 @@ useEffect(() => {
       <div style={{ marginTop: '20px' }}>
         <button onClick={() => navigate.push('/settings')}>Go to Settings Page</button>
         <button onClick={() => navigate.push('/settings')}>Print Receipt</button>
-        <button onClick={() => navigate('/unsubscribe')}>Unsubscribe</button>
+        <button onClick={() => navigate(`/unsubscribe?subscription_id=${subscriptionId}`)}>Unsubscribe</button>
       </div>
     </div>
   );
