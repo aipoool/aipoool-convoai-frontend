@@ -153,6 +153,7 @@ useEffect(() => {
         <button onClick={() => navigate.push('/settings')}>Go to Settings Page</button>
         <button onClick={() => navigate.push('/settings')}>Print Receipt</button>
         <button onClick={() => navigate(`/unsubscribe?subscription_id=${subscriptionId}`)}>Unsubscribe</button>
+        <button onClick={() => navigate(`/change-in-plans?subscription_id=${subscriptionId}`)}>Change Plan</button>
       </div>
     </div>
   );

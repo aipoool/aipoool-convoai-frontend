@@ -6,6 +6,7 @@ import PricingPlan from './components/PricingPlan';
 import PaymentSuccess from './components/Success';
 import PaymentFailed from './components/Failed';
 import CancelSubscription from './components/CancelSubscription';
+import ChangeSubscription from './components/ChangeSubscription';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/payment-success" element={<PaymentSuccess />} />
         <Route path="/payment-failed" element={<PaymentFailed />} />
         <Route path="/unsubscribe" element={<CancelSubscription />} />
+        <Route path="/change-in-plans" element={<ChangeSubscription />} />
         <Route path="/" element={<Login />} />
       </Routes>
     </Router>
