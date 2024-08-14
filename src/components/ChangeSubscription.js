@@ -18,46 +18,49 @@ const ChangeSubscription = () => {
   const query = useQuery();
   const subscriptionId = query.get('subscription_id');
 
+  const fetchCurrentPlan = async () => {
+    // getting the token from the local storage
+    const storedToken = localStorage.getItem('convoaiUserProfData');
+    if (storedToken) {
+      const userToken = JSON.parse(storedToken);
+      console.log('Retrieved user data from settings page:', userToken);
+      const secureToken = `${userToken}c0Nv0AI`;
+      setUserjwt(secureToken);
+      
+    } else {
+      console.log('No user data found in localStorage');
+    }
+
+if(subscriptionId){
+    console.log(subscriptionId)
+  try{
+    const response = await axios.get(`https://aipoool-convoai-backend.onrender.com/api/subscription-details/${subscriptionId}`, 
+      {
+        headers: {
+          Authorization: `Bearer ${userjwtToken}`, // Send the token in the Authorization header
+        },
+        withCredentials: true, // Include credentials if necessary (cookies, etc.)
+      });
+    
+
+    console.log("User data here ::: " , response.data); 
+    setCurrentPlan(response.data);
+     
+    
+  }catch(error){ 
+    console.log("error", error); 
+  }
+
+}
+};
+
 
   useEffect(() => {
     // Fetch the current plan from the backend
-    const fetchCurrentPlan = async () => {
-        // getting the token from the local storage
-        const storedToken = localStorage.getItem('convoaiUserProfData');
-        if (storedToken) {
-          const userToken = JSON.parse(storedToken);
-          console.log('Retrieved user data from settings page:', userToken);
-          const secureToken = `${userToken}c0Nv0AI`;
-          setUserjwt(secureToken);
-          
-        } else {
-          console.log('No user data found in localStorage');
-        }
-
-    if(subscriptionId){
-        console.log(subscriptionId)
-      try{
-        const response = await axios.get(`https://aipoool-convoai-backend.onrender.com/api/subscription-details/${subscriptionId}`, 
-          {
-            headers: {
-              Authorization: `Bearer ${userjwtToken}`, // Send the token in the Authorization header
-            },
-            withCredentials: true, // Include credentials if necessary (cookies, etc.)
-          });
-        
-
-        console.log("User data here ::: " , response.data); 
-        setCurrentPlan(response.data);
-         
-        
-      }catch(error){ 
-        console.log("error", error); 
-      }
-
+    if(userjwtToken){
+      fetchCurrentPlan();
     }
-    };
-    fetchCurrentPlan();
-  }, []);
+  }, [userjwtToken, subscriptionId]);
 
   const handleDowngradeReasonChange = (e) => {
     setReason(e.target.value);
