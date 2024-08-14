@@ -168,10 +168,13 @@ if(subscriptionId){
                 {/* Add more fields as necessary */}
             </div>
             )}
-            <button onClick={() => setStep(2)}>Downgrade</button>
             <button onClick={() => {
-            setStep(4);
-			console.log(`Upgrade button clicked, step should be ${step} now`);
+                setStep(2)
+                console.log(`Upgrade button clicked, step should be ${step} now`);
+                }}>Downgrade</button>
+            <button onClick={() => {
+            setStep(4)
+            console.log(`Upgrade button clicked, step should be ${step} now`);
             }}>Upgrade</button>
         </div>
         )}
