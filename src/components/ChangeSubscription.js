@@ -46,6 +46,7 @@ if(subscriptionId){
 
     console.log("User data here ::: " , response.data); 
     setCurrentPlan(response.data);
+    console.log(response.data.plan_id); 
     setCurrentPlanId(response.data.plan_id); 
      
     
@@ -65,6 +66,7 @@ if(subscriptionId){
     if (step === 2) {
       setLoading(true);
       try {
+        console.log("currentPlanId :: " , currentPlanId)
         const response = await axios.get(`/api/getAvailableDowngradePlans/${currentPlanId}`); // Replace with actual API endpoint
         console.log('Plans here ::: ' , response); 
         console.log('Also plans here ::: ', response.data); 
