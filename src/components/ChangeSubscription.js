@@ -35,6 +35,7 @@ const ChangeSubscription = () => {
         }
 
     if(subscriptionId){
+        console.log(subscriptionId)
       try{
         const response = await axios.get(`https://aipoool-convoai-backend.onrender.com/api/subscription-details/${subscriptionId}`, 
           {
