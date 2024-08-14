@@ -55,13 +55,6 @@ if(subscriptionId){
 };
 
 
-  useEffect(() => {
-    // Fetch the current plan from the backend
-    if(userjwtToken){
-      fetchCurrentPlan();
-    }
-  }, [userjwtToken, subscriptionId]);
-
   const handleDowngradeReasonChange = (e) => {
     setReason(e.target.value);
   };
@@ -131,6 +124,13 @@ if(subscriptionId){
       </div>
     ));
   };
+
+  useEffect(() => {
+    // Fetch the current plan from the backend
+    if(userjwtToken){
+      fetchCurrentPlan();
+    }
+  }, [userjwtToken, subscriptionId]);
 
   return (
     <div>
