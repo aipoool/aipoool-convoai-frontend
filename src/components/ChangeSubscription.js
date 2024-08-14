@@ -14,6 +14,7 @@ const ChangeSubscription = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [userjwtToken, setUserjwt] = useState({}); 
+  const [currentPlanId, setCurrentPlanId] = useState({}); 
 
   const query = useQuery();
   const subscriptionId = query.get('subscription_id');
@@ -45,6 +46,7 @@ if(subscriptionId){
 
     console.log("User data here ::: " , response.data); 
     setCurrentPlan(response.data);
+    setCurrentPlanId(response.data.plan_id); 
      
     
   }catch(error){ 
@@ -63,7 +65,7 @@ if(subscriptionId){
     if (step === 2) {
       setLoading(true);
       try {
-        const response = await axios.get(`/api/getAvailableDowngradePlans?subscription_id=${subscriptionId}`); // Replace with actual API endpoint
+        const response = await axios.get(`/api/getAvailableDowngradePlans/${currentPlanId}`); // Replace with actual API endpoint
         console.log('Plans here ::: ' , response); 
         console.log('Also plans here ::: ', response.data); 
         setAvailablePlans(response.data.plans);
@@ -75,7 +77,7 @@ if(subscriptionId){
     } else if (step === 4) {
       setLoading(true);
       try {
-        const response = await axios.get(`/api/getAvailableUpgradePlans?subscription_id=${subscriptionId}`); // Replace with actual API endpoint
+        const response = await axios.get(`/api/getAvailableUpgradePlans/${currentPlanId}`); // Replace with actual API endpoint
         setAvailablePlans(response.data.plans);
         console.log('Plans here ::: ' , response); 
         console.log('Also plans here ::: ', response.data); 
