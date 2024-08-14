@@ -76,7 +76,7 @@ if(subscriptionId){
             }); // Replace with actual API endpoint
         console.log('Plans here ::: ' , response); 
         console.log('Also plans here ::: ', response.data); 
-        setAvailablePlans(response.data.plans);
+        setAvailablePlans(response.data);
         setStep(3);
       } catch (error) {
         console.error('Error fetching downgrade plans:', error);
@@ -88,11 +88,11 @@ if(subscriptionId){
         const response = await axios.get(`https://aipoool-convoai-backend.onrender.com/api/getAvailableUpgradePlans/${currentPlanId}`, 
         {
             headers: {
-                Authorization: `Bearer ${userjwtToken}`, // Send the token in the Authorization headerrr
+                Authorization: `Bearer ${userjwtToken}`, // Send the token in the Authorization header
             },
             withCredentials: true, // Include credentials if necessary (cookies, etc.)
         }); // Replace with actual API endpoint 
-        setAvailablePlans(response.data.plans);
+        setAvailablePlans(response.data);
         console.log('Plans here ::: ' , response); 
         console.log('Also plans here ::: ', response.data); 
         setStep(5);
