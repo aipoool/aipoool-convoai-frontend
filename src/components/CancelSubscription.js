@@ -8,6 +8,8 @@ const useQuery = () => {
 const CancelSubscription = () => {
   const [reason, setReason] = useState('');
   const [otherReason, setOtherReason] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState('');
   const [userjwtToken, setUserjwt] = useState({}); 
 
   const query = useQuery();
@@ -46,6 +48,7 @@ const CancelSubscription = () => {
     selectedReason = reason === 'Others' ? otherReason : reason;
     console.log('Cancellation reason:', selectedReason);
     // You can add further processing here, such as sending the reason to a backend
+    setLoading(true);
     setCancelSubscription(); 
   };
 
@@ -65,10 +68,17 @@ const CancelSubscription = () => {
           withCredentials: true, // Include credentials if necessary (cookies, etc.)
         }
       );
+
+      if (response.status === 200) {
+        setMessage("Subscription successfully cancelled");
+        setLoading(false); // Stop the loading spinner
+      }
   
   
     } catch (error) {
-      console.error("Error during subscription:", error);
+      console.error("Error during unsubscription:", error);
+      setMessage("Failed to cancel the subscription");
+      setLoading(false); // Stop the loading spinner
     }
   };
 
@@ -141,9 +151,15 @@ const CancelSubscription = () => {
           />
         )}
       </div>
-      <button onClick={handleSubmit}>Submit</button>
+      <button onClick={handleSubmit} disabled={loading}>
+        {loading ? 'Processing...' : 'Submit'}
+      </button>
+
+      {loading && <p>Loading...</p>}
+      {message && <p>{message}</p>}
     </div>
   );
+
 };
 
 export default CancelSubscription;
