@@ -67,7 +67,13 @@ if(subscriptionId){
       setLoading(true);
       try {
         console.log("currentPlanId :: " , currentPlanId)
-        const response = await axios.get(`https://aipoool-convoai-backend.onrender.com/api/getAvailableDowngradePlans/${currentPlanId}`); // Replace with actual API endpoint
+        const response = await axios.get(`https://aipoool-convoai-backend.onrender.com/api/getAvailableDowngradePlans/${currentPlanId}` ,
+            {
+                headers: {
+                  Authorization: `Bearer ${userjwtToken}`, // Send the token in the Authorization header
+                },
+                withCredentials: true, // Include credentials if necessary (cookies, etc.)
+            }); // Replace with actual API endpoint
         console.log('Plans here ::: ' , response); 
         console.log('Also plans here ::: ', response.data); 
         setAvailablePlans(response.data.plans);
@@ -79,7 +85,13 @@ if(subscriptionId){
     } else if (step === 4) {
       setLoading(true);
       try {
-        const response = await axios.get(`https://aipoool-convoai-backend.onrender.com/api/getAvailableUpgradePlans/${currentPlanId}`); // eplace with actual API endpoint
+        const response = await axios.get(`https://aipoool-convoai-backend.onrender.com/api/getAvailableUpgradePlans/${currentPlanId}`, 
+        {
+            headers: {
+                Authorization: `Bearer ${userjwtToken}`, // Send the token in the Authorization header
+            },
+            withCredentials: true, // Include credentials if necessary (cookies, etc.)
+        }); // Replace with actual API endpoint 
         setAvailablePlans(response.data.plans);
         console.log('Plans here ::: ' , response); 
         console.log('Also plans here ::: ', response.data); 
