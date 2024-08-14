@@ -137,11 +137,19 @@ if(subscriptionId){
       <h1>Upgrade/Downgrade the Plan</h1>
       {step === 1 && (
         <div>
-          <p><strong>Current Plan:</strong> {currentPlan}</p>
-          <button onClick={() => setStep(2)}>Downgrade</button>
-          <button onClick={() => setStep(4)}>Upgrade</button>
+            <p><strong>Current Plan:</strong></p>
+            {currentPlan && (
+            <div>
+                <p>Plan Name: {currentPlan.plan_name}</p>
+                <p>Plan Description: {currentPlan.plan_description}</p>
+                <p>Plan Status: {currentPlan.status}</p>
+                {/* Add more fields as necessary */}
+            </div>
+            )}
+            <button onClick={() => setStep(2)}>Downgrade</button>
+            <button onClick={() => setStep(4)}>Upgrade</button>
         </div>
-      )}
+        )}
       
       {step === 2 && (
         <div>
