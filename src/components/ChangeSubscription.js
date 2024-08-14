@@ -63,8 +63,8 @@ if(subscriptionId){
   };
 
   const handleNext = async () => {
+    setLoading(true);
     if (step === 2) {
-      setLoading(true);
       try {
         console.log("currentPlanId :: " , currentPlanId)
         const response = await axios.get(`https://aipoool-convoai-backend.onrender.com/api/getAvailableDowngradePlans/${currentPlanId}` ,
@@ -83,7 +83,6 @@ if(subscriptionId){
       }
       setLoading(false);
     } else if (step === 4) {
-      setLoading(true);
       try {
         const response = await axios.get(`https://aipoool-convoai-backend.onrender.com/api/getAvailableUpgradePlans/${currentPlanId}`, 
         {
@@ -120,9 +119,9 @@ if(subscriptionId){
   };
 
   const renderPlans = () => {
-    return availablePlans.map((plan) => (
+    return availablePlans.map((plan, index) => (
       <div
-        key={plan.id}
+        key={index} // Use index or a unique key if available
         className="plan-option"
         style={{
           border: '1px solid #ddd',
@@ -130,16 +129,22 @@ if(subscriptionId){
           padding: '16px',
           marginBottom: '16px',
           cursor: 'pointer',
-          backgroundColor: selectedPlan === plan.id ? '#f0f0f0' : '#fff',
+          backgroundColor: selectedPlan === plan.planId ? '#f0f0f0' : '#fff',
+          boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
-        onClick={() => setSelectedPlan(plan.id)}
+        onClick={() => setSelectedPlan(plan.planId)}
       >
-        <h3>{plan.name}</h3>
-        <p>{plan.description}</p>
-        <p><strong>Price: </strong>{plan.price}</p>
+        <h3>{plan.planName}</h3>
+        <p>{plan.planDescription}</p>
+        <p><strong>Price: </strong>{plan.planPrice}</p>
       </div>
     ));
   };
+  
 
   useEffect(() => {
     // Fetch the current plan from the backend
