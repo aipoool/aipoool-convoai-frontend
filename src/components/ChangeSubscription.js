@@ -88,7 +88,7 @@ if(subscriptionId){
         const response = await axios.get(`https://aipoool-convoai-backend.onrender.com/api/getAvailableUpgradePlans/${currentPlanId}`, 
         {
             headers: {
-                Authorization: `Bearer ${userjwtToken}`, // Send the token in the Authorization header
+                Authorization: `Bearer ${userjwtToken}`, // Send the token in the Authorization headerrr
             },
             withCredentials: true, // Include credentials if necessary (cookies, etc.)
         }); // Replace with actual API endpoint 
