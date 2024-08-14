@@ -22,8 +22,6 @@ const CancelSubscription = () => {
         console.log('Retrieved user data from settings page:', userToken);
         const secureToken = `${userToken}c0Nv0AI`;
         setUserjwt(secureToken);
-
-        localStorage.removeItem('convoaiUserProfData');
         
       } else {
         console.log('No user data found in localStorage');
