@@ -64,6 +64,7 @@ if(subscriptionId){
 
   const handleNext = async () => {
     setLoading(true);
+    console.log('Current Step:', step); // Check current step
     if (step === 2) {
       try {
         console.log("currentPlanId :: " , currentPlanId)
@@ -168,7 +169,10 @@ if(subscriptionId){
             </div>
             )}
             <button onClick={() => setStep(2)}>Downgrade</button>
-            <button onClick={() => setStep(4)}>Upgrade</button>
+            <button onClick={() => {
+            console.log(`Upgrade button clicked, step should be ${step} now`);
+            setStep(4)
+            }}>Upgrade</button>
         </div>
         )}
       
