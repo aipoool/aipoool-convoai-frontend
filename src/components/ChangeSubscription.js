@@ -7,7 +7,7 @@ const useQuery = () => {
 
 const ChangeSubscription = () => {
   const [currentPlan, setCurrentPlan] = useState('');
-  const [step, setStep] = useState();
+  const [step, setStep] = useState(1);
   const [reason, setReason] = useState('');
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [availablePlans, setAvailablePlans] = useState([]);
