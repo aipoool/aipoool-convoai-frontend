@@ -100,6 +100,8 @@ if(subscriptionId){
         console.error('Error fetching upgrade plans:', error);
       }
       setLoading(false);
+    } else if(step === 5){
+      console.log(`The loop for step ${step} has completed.`);
     }
   };
 
@@ -173,7 +175,7 @@ if(subscriptionId){
                 console.log(`Upgrade button clicked, step should be ${step} now`);
                 }}>Downgrade</button>
             <button onClick={() => {
-            setStep(3)
+            setStep(4)
             console.log(`Upgrade button clicked, step should be ${step} now`);
             }}>Upgrade</button>
         </div>
@@ -205,7 +207,7 @@ if(subscriptionId){
           <h2>Select a plan to downgrade to</h2>
           {loading ? <p>Loading plans...</p> : renderPlans()}
           <div style={{ marginTop: '20px' }}>
-            <button onClick={() => setStep(2)}>Go Back</button>
+            <button onClick={() => setStep(1)}>Go Back</button>
             <button
               onClick={() => handleSubscribe(selectedPlan)}
               disabled={!selectedPlan}
