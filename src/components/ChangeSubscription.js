@@ -173,7 +173,7 @@ if(subscriptionId){
                 console.log(`Upgrade button clicked, step should be ${step} now`);
                 }}>Downgrade</button>
             <button onClick={() => {
-            setStep(4)
+            setStep(3)
             console.log(`Upgrade button clicked, step should be ${step} now`);
             }}>Upgrade</button>
         </div>
