@@ -95,13 +95,10 @@ if(subscriptionId){
         setAvailablePlans(response.data);
         console.log('Plans here ::: ' , response); 
         console.log('Also plans here ::: ', response.data); 
-        setStep(5);
       } catch (error) {
         console.error('Error fetching upgrade plans:', error);
       }
       setLoading(false);
-    } else if(step === 5){
-      console.log(`The loop for step ${step} has completed.`);
     }
   };
 
