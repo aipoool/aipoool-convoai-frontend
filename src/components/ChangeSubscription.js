@@ -107,10 +107,13 @@ const ChangeSubscription = () => {
   };
 
   const handleSubscribe = async () => {
+    console.log('The plan user wants to choose ::: ' , selectedPlan); 
     setLoading(true);
     try {
-      const response = await axios.post('https://aipoool-convoai-backend.onrender.com/api/changePlan', 
-        { planId: selectedPlan },
+      const response = await axios.post('https://aipoool-convoai-backend.onrender.com/api/change-plan', 
+        { subscriptionId: subscriptionId, 
+          changedPlanId: selectedPlan.planId, 
+        },
         {
             headers: {
                 Authorization: `Bearer ${userjwtToken}`, 
@@ -155,8 +158,9 @@ const ChangeSubscription = () => {
   };
 
   useEffect(() => {
-    fetchCurrentPlan();
-
+    if(userjwtToken){
+      fetchCurrentPlan();
+    }
   }, [userjwtToken, subscriptionId]);
 
   return (
@@ -246,7 +250,7 @@ const ChangeSubscription = () => {
           <h2>Select a plan to upgrade to</h2>
           {loading ? <p>Loading plans...</p> : renderPlans(availableUpgradePlans)}
           <div style={{ marginTop: '20px' }}>
-            <button onClick={() => setStep(5)}>Go Back</button>
+            <button onClick={() => setStep(4)}>Go Back</button>
             <button
               onClick={handleNext}
               disabled={!selectedPlan}
@@ -267,7 +271,7 @@ const ChangeSubscription = () => {
             </div>
           )}
           <div style={{ marginTop: '20px' }}>
-            <button onClick={() => setStep(step === 3 ? 3 : 6)}>Go Back</button>
+            <button onClick={() => setStep(1)}>Go Back</button>
             <button onClick={handleSubscribe}>Confirm Plan</button>
           </div>
         </div>
