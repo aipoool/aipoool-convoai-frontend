@@ -14,13 +14,14 @@ const ChangeSubscription = () => {
   const [availableUpgradePlans, setAvailableUpgradePlans] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
-  const [userjwtToken, setUserjwt] = useState(''); 
-  const [currentPlanId, setCurrentPlanId] = useState(''); 
+  const [userjwtToken, setUserjwt] = useState({}); 
+  const [currentPlanId, setCurrentPlanId] = useState({}); 
 
   const query = useQuery();
   const subscriptionId = query.get('subscription_id');
 
   const fetchCurrentPlan = async () => {
+    // getting the token from the local storage
     const storedToken = localStorage.getItem('convoaiUserProfData');
     if (storedToken) {
       const userToken = JSON.parse(storedToken);
@@ -38,9 +39,9 @@ const ChangeSubscription = () => {
         const response = await axios.get(`https://aipoool-convoai-backend.onrender.com/api/subscription-details/${subscriptionId}`, 
           {
             headers: {
-              Authorization: `Bearer ${userjwtToken}`, 
+              Authorization: `Bearer ${userjwtToken}`, // Send the token in the Authorization header
             },
-            withCredentials: true, 
+            withCredentials: true, // Include credentials if necessary (cookies, etc.)
           });
         
 
@@ -61,16 +62,17 @@ const ChangeSubscription = () => {
 
   const handleNext = async () => {
     setLoading(true);
-    console.log('Current Step:', step); 
+    console.log('Current Step:', step); // Check current step
     if (step === 2) {
+      // Downgrade: Fetch available downgrade plans
       try {
         console.log("currentPlanId :: " , currentPlanId)
         const response = await axios.get(`https://aipoool-convoai-backend.onrender.com/api/getAvailableDowngradePlans/${currentPlanId}`,
             {
                 headers: {
-                  Authorization: `Bearer ${userjwtToken}`, 
+                  Authorization: `Bearer ${userjwtToken}`, // Send the token in the Authorization header
                 },
-                withCredentials: true, 
+                withCredentials: true, // Include credentials if necessary (cookies, etc.)
             });
         console.log('Plans here ::: ' , response.data); 
         setAvailableDowngradePlans(response.data);
@@ -80,15 +82,17 @@ const ChangeSubscription = () => {
       }
       setLoading(false);
     } else if (step === 4) {
-      setStep(5); 
+      // Upgrade: Ask for reason to upgrade
+      setStep(5);
     } else if (step === 5) {
+      // Fetch available upgrade plans
       try {
         const response = await axios.get(`https://aipoool-convoai-backend.onrender.com/api/getAvailableUpgradePlans/${currentPlanId}`,
         {
             headers: {
-                Authorization: `Bearer ${userjwtToken}`, 
+                Authorization: `Bearer ${userjwtToken}`, // Send the token in the Authorization header
             },
-            withCredentials: true, 
+            withCredentials: true, // Include credentials if necessary (cookies, etc.)
         });
         console.log('Upgrade Plans here ::: ' , response.data); 
         setAvailableUpgradePlans(response.data);
@@ -98,7 +102,8 @@ const ChangeSubscription = () => {
       }
       setLoading(false);
     } else if (step === 6 || step === 3) {
-      setStep(7); 
+      // Final step: Confirm the plan selection
+      setStep(7);
     }
   };
 
@@ -109,13 +114,14 @@ const ChangeSubscription = () => {
         { planId: selectedPlan },
         {
             headers: {
-                Authorization: `Bearer ${userjwtToken}`, 
+                Authorization: `Bearer ${userjwtToken}`, // Send the token in the Authorization header
             },
-            withCredentials: true, 
+            withCredentials: true, // Include credentials if necessary (cookies, etc.)
         }
-      ); 
+      ); // Replace with actual API endpoint
       setMessage('Plan changed successfully!');
       setLoading(false);
+      // Optionally, redirect or update UI
     } catch (error) {
       console.error('Error changing plan:', error);
       setMessage('Failed to change the plan.');
@@ -126,7 +132,7 @@ const ChangeSubscription = () => {
   const renderPlans = (plans) => {
     return plans.map((plan, index) => (
       <div
-        key={index} 
+        key={index} // Use index or a unique key if available
         className="plan-option"
         style={{
           border: '1px solid #ddd',
@@ -151,6 +157,7 @@ const ChangeSubscription = () => {
   };
 
   useEffect(() => {
+    // Fetch the current plan from the backend
     if(userjwtToken){
       fetchCurrentPlan();
     }
@@ -167,6 +174,7 @@ const ChangeSubscription = () => {
                 <p>Plan Name: {currentPlan.plan_name}</p>
                 <p>Plan Description: {currentPlan.plan_description}</p>
                 <p>Plan Status: {currentPlan.status}</p>
+                {/* Add more fields as necessary */}
             </div>
             )}
             <button onClick={() => {
