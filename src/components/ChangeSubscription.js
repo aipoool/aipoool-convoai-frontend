@@ -158,8 +158,9 @@ const ChangeSubscription = () => {
   };
 
   useEffect(() => {
-    fetchCurrentPlan();
-
+    if(userjwtToken){
+      fetchCurrentPlan();
+    }
   }, [userjwtToken, subscriptionId]);
 
   return (
@@ -261,19 +262,22 @@ const ChangeSubscription = () => {
       )}
       
       {step === 6 && (
+  <div>
+  <h2>Confirm Your Plan Selection</h2>
+  {selectedPlan && (
         <div>
-          <h2>Confirm Your Plan Selection</h2>
-          {selectedPlan && (
-            <div>
-              <h3>Selected Plan:</h3>
-              {renderPlans([selectedPlan === availableDowngradePlans.find(p => p.planId === selectedPlan) ? availableDowngradePlans.find(p => p.planId === selectedPlan) : availableUpgradePlans.find(p => p.planId === selectedPlan)])}
-            </div>
-          )}
-          <div style={{ marginTop: '20px' }}>
-            <button onClick={() => setStep(1)}>Go Back</button>
-            <button onClick={handleSubscribe}>Confirm Plan</button>
-          </div>
+          <h3>Selected Plan:</h3>
+          {renderPlans([
+            availableDowngradePlans.find(p => p.planId === selectedPlan) || 
+            availableUpgradePlans.find(p => p.planId === selectedPlan)
+          ])}
         </div>
+      )}
+        <div style={{ marginTop: '20px' }}>
+          <button onClick={() => setStep(1)}>Go Back</button>
+          <button onClick={handleSubscribe}>Confirm Plan</button>
+        </div>
+      </div>
       )}
       
       {message && <p>{message}</p>}
