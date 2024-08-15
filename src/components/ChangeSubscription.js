@@ -10,17 +10,17 @@ const ChangeSubscription = () => {
   const [step, setStep] = useState(1);
   const [reason, setReason] = useState('');
   const [selectedPlan, setSelectedPlan] = useState(null);
-  const [availableDowngradePlans, setAvailableDowngradePlans] = useState([]);
-  const [availableUpgradePlans, setAvailableUpgradePlans] = useState([]);
+  const [availablePlans, setAvailablePlans] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
-  const [userjwtToken, setUserjwt] = useState(''); 
-  const [currentPlanId, setCurrentPlanId] = useState(''); 
+  const [userjwtToken, setUserjwt] = useState({}); 
+  const [currentPlanId, setCurrentPlanId] = useState({}); 
 
   const query = useQuery();
   const subscriptionId = query.get('subscription_id');
 
   const fetchCurrentPlan = async () => {
+    // getting the token from the local storage
     const storedToken = localStorage.getItem('convoaiUserProfData');
     if (storedToken) {
       const userToken = JSON.parse(storedToken);
@@ -32,90 +32,86 @@ const ChangeSubscription = () => {
       console.log('No user data found in localStorage');
     }
 
-    if(subscriptionId){
-      console.log(subscriptionId)
-      try{
-        const response = await axios.get(`https://aipoool-convoai-backend.onrender.com/api/subscription-details/${subscriptionId}`, 
-          {
-            headers: {
-              Authorization: `Bearer ${userjwtToken}`, 
-            },
-            withCredentials: true, 
-          });
-        
+if(subscriptionId){
+    console.log(subscriptionId)
+  try{
+    const response = await axios.get(`https://aipoool-convoai-backend.onrender.com/api/subscription-details/${subscriptionId}`, 
+      {
+        headers: {
+          Authorization: `Bearer ${userjwtToken}`, // Send the token in the Authorization header
+        },
+        withCredentials: true, // Include credentials if necessary (cookies, etc.)
+      });
+    
 
-        console.log("User data here ::: " , response.data); 
-        setCurrentPlan(response.data);
-        console.log(response.data.plan_id); 
-        setCurrentPlanId(response.data.plan_id); 
-      }catch(error){ 
-        console.log("error", error); 
-      }
-    }
-  };
+    console.log("User data here ::: " , response.data); 
+    setCurrentPlan(response.data);
+    console.log(response.data.plan_id); 
+    setCurrentPlanId(response.data.plan_id); 
+     
+    
+  }catch(error){ 
+    console.log("error", error); 
+  }
+
+}
+};
 
 
-  const handleReasonChange = (e) => {
+  const handleDowngradeReasonChange = (e) => {
     setReason(e.target.value);
   };
 
   const handleNext = async () => {
     setLoading(true);
-    console.log('Current Step:', step); 
+    console.log('Current Step:', step); // Check current step
     if (step === 2) {
       try {
         console.log("currentPlanId :: " , currentPlanId)
-        const response = await axios.get(`https://aipoool-convoai-backend.onrender.com/api/getAvailableDowngradePlans/${currentPlanId}`,
+        const response = await axios.get(`https://aipoool-convoai-backend.onrender.com/api/getAvailableDowngradePlans/${currentPlanId}` ,
             {
                 headers: {
-                  Authorization: `Bearer ${userjwtToken}`, 
+                  Authorization: `Bearer ${userjwtToken}`, // Send the token in the Authorization header
                 },
-                withCredentials: true, 
-            });
-        console.log('Plans here ::: ' , response.data); 
-        setAvailableDowngradePlans(response.data);
+                withCredentials: true, // Include credentials if necessary (cookies, etc.)
+            }); // Replace with actual API endpoint
+        console.log('Plans here ::: ' , response); 
+        console.log('Also plans here ::: ', response.data); 
+        setAvailablePlans(response.data);
         setStep(3);
       } catch (error) {
         console.error('Error fetching downgrade plans:', error);
       }
       setLoading(false);
     } else if (step === 4) {
-      setStep(5); 
-    } else if (step === 5) {
       try {
-        const response = await axios.get(`https://aipoool-convoai-backend.onrender.com/api/getAvailableUpgradePlans/${currentPlanId}`,
+        const response = await axios.get(`https://aipoool-convoai-backend.onrender.com/api/getAvailableUpgradePlans/${currentPlanId}`, 
         {
             headers: {
-                Authorization: `Bearer ${userjwtToken}`, 
+                Authorization: `Bearer ${userjwtToken}`, // Send the token in the Authorization header
             },
-            withCredentials: true, 
-        });
-        console.log('Upgrade Plans here ::: ' , response.data); 
-        setAvailableUpgradePlans(response.data);
-        setStep(6);
+            withCredentials: true, // Include credentials if necessary (cookies, etc.)
+        }); // Replace with actual API endpoint 
+        setAvailablePlans(response.data);
+        console.log('Plans here ::: ' , response); 
+        console.log('Also plans here ::: ', response.data); 
+        setStep(5);
       } catch (error) {
         console.error('Error fetching upgrade plans:', error);
       }
       setLoading(false);
-    } else if (step === 6 || step === 3) {
-      setStep(7); 
     }
   };
 
-  const handleSubscribe = async () => {
+  const handleSubscribe = async (planId) => {
     setLoading(true);
     try {
-      const response = await axios.post('https://aipoool-convoai-backend.onrender.com/api/changePlan', 
-        { planId: selectedPlan },
-        {
-            headers: {
-                Authorization: `Bearer ${userjwtToken}`, 
-            },
-            withCredentials: true, 
-        }
-      ); 
+      const response = await axios.post('/api/changePlan', 
+        { planId }
+    ); // Replace with actual API endpoint
       setMessage('Plan changed successfully!');
       setLoading(false);
+      // Optionally, redirect or update UI
     } catch (error) {
       console.error('Error changing plan:', error);
       setMessage('Failed to change the plan.');
@@ -123,10 +119,10 @@ const ChangeSubscription = () => {
     }
   };
 
-  const renderPlans = (plans) => {
-    return plans.map((plan, index) => (
+  const renderPlans = () => {
+    return availablePlans.map((plan, index) => (
       <div
-        key={index} 
+        key={index} // Use index or a unique key if available
         className="plan-option"
         style={{
           border: '1px solid #ddd',
@@ -149,8 +145,10 @@ const ChangeSubscription = () => {
       </div>
     ));
   };
+  
 
   useEffect(() => {
+    // Fetch the current plan from the backend
     if(userjwtToken){
       fetchCurrentPlan();
     }
@@ -167,14 +165,15 @@ const ChangeSubscription = () => {
                 <p>Plan Name: {currentPlan.plan_name}</p>
                 <p>Plan Description: {currentPlan.plan_description}</p>
                 <p>Plan Status: {currentPlan.status}</p>
+                {/* Add more fields as necessary */}
             </div>
             )}
             <button onClick={() => {
-                setStep(2);
-                console.log(`Downgrade button clicked, step should be ${step} now`);
+                setStep(2)
+                console.log(`Upgrade button clicked, step should be ${step} now`);
                 }}>Downgrade</button>
             <button onClick={() => {
-            setStep(4);
+            setStep(4)
             console.log(`Upgrade button clicked, step should be ${step} now`);
             }}>Upgrade</button>
         </div>
@@ -185,7 +184,7 @@ const ChangeSubscription = () => {
           <h2>Why do you want to downgrade?</h2>
           <textarea
             value={reason}
-            onChange={handleReasonChange}
+            onChange={handleDowngradeReasonChange}
             placeholder="Enter your reason"
             style={{ width: '100%', height: '100px' }}
           />
@@ -204,68 +203,31 @@ const ChangeSubscription = () => {
       {step === 3 && (
         <div>
           <h2>Select a plan to downgrade to</h2>
-          {loading ? <p>Loading plans...</p> : renderPlans(availableDowngradePlans)}
+          {loading ? <p>Loading plans...</p> : renderPlans()}
           <div style={{ marginTop: '20px' }}>
             <button onClick={() => setStep(2)}>Go Back</button>
             <button
-              onClick={handleNext}
+              onClick={() => handleSubscribe(selectedPlan)}
               disabled={!selectedPlan}
             >
-              Next
+              Subscribe to this plan
             </button>
           </div>
         </div>
       )}
       
-      {step === 5 && (
+      {step === 4 && (
         <div>
-          <h2>Why do you want to upgrade?</h2>
-          <textarea
-            value={reason}
-            onChange={handleReasonChange}
-            placeholder="Enter your reason"
-            style={{ width: '100%', height: '100px' }}
-          />
+          <h2>Select a plan to upgrade to</h2>
+          {loading ? <p>Loading plans...</p> : renderPlans()}
           <div style={{ marginTop: '20px' }}>
             <button onClick={() => setStep(1)}>Go Back</button>
             <button
-              onClick={handleNext}
-              disabled={!reason.trim()}
-            >
-              Next
-            </button>
-          </div>
-        </div>
-      )}
-
-      {step === 6 && (
-        <div>
-          <h2>Select a plan to upgrade to</h2>
-          {loading ? <p>Loading plans...</p> : renderPlans(availableUpgradePlans)}
-          <div style={{ marginTop: '20px' }}>
-            <button onClick={() => setStep(5)}>Go Back</button>
-            <button
-              onClick={handleNext}
+              onClick={() => handleSubscribe(selectedPlan)}
               disabled={!selectedPlan}
             >
-              Next
+              Subscribe to this plan
             </button>
-          </div>
-        </div>
-      )}
-      
-      {step === 7 && (
-        <div>
-          <h2>Confirm Your Plan Selection</h2>
-          {selectedPlan && (
-            <div>
-              <h3>Selected Plan:</h3>
-              {renderPlans([selectedPlan === availableDowngradePlans.find(p => p.planId === selectedPlan) ? availableDowngradePlans.find(p => p.planId === selectedPlan) : availableUpgradePlans.find(p => p.planId === selectedPlan)])}
-            </div>
-          )}
-          <div style={{ marginTop: '20px' }}>
-            <button onClick={() => setStep(step === 3 ? 3 : 6)}>Go Back</button>
-            <button onClick={handleSubscribe}>Confirm Plan</button>
           </div>
         </div>
       )}
