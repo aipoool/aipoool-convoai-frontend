@@ -112,7 +112,7 @@ const ChangeSubscription = () => {
     try {
       const response = await axios.post('https://aipoool-convoai-backend.onrender.com/api/change-plan', 
         { subscriptionId: subscriptionId, 
-          changedPlanId: selectedPlan.planId, 
+          changedPlanId: selectedPlan, 
         },
         {
             headers: {
