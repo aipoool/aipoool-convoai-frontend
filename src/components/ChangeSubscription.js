@@ -158,9 +158,8 @@ const ChangeSubscription = () => {
   };
 
   useEffect(() => {
-    if(userjwtToken){
-      fetchCurrentPlan();
-    }
+    fetchCurrentPlan();
+
   }, [userjwtToken, subscriptionId]);
 
   return (
