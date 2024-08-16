@@ -63,38 +63,38 @@ const PricingPlan = () => {
       <h1>Pricing Plans</h1>
       <div className="pricing-table">
         <div className="plan">
-          <h2>Basic</h2>
+          <h2>Starter Spark</h2>
           <p>$10/month</p>
           <ul>
-            <li>Basic Benefit 1</li>
-            <li>Basic Benefit 2</li>
-            <li>Basic Benefit 3</li>
+            <li>Benefit 1</li>
+            <li>Benefit 2</li>
+            <li>Benefit 3</li>
           </ul>
           <button 
             className="select-plan-btn" 
-            onClick={() => handleSelectPlan('Basic' , 'P-55M42500U43143339M23Z5TI')}
+            onClick={() => handleSelectPlan('Starter Spark' , 'P-2HX858041N255753NM27E44I')}
           >
             Select Plan
           </button>
         </div>
         <div className="plan">
-          <h2>Pro</h2>
-          <p>$20/month</p>
+          <h2>Pro Pulse</h2>
+          <p>$12/month</p>
           <ul>
-            <li>Pro Benefit 1</li>
-            <li>Pro Benefit 2</li>
-            <li>Pro Benefit 3</li>
+            <li>Benefit 1</li>
+            <li>Benefit 2</li>
+            <li>Benefit 3</li>
           </ul>
           <button 
             className="select-plan-btn" 
-            onClick={() => handleSelectPlan('Pro' , 'P-2DE39443D4956545AM23Z7GY')}
+            onClick={() => handleSelectPlan('Pro Pulse' , 'P-4KB03423V2528092MM27FARY')}
           >
             Select Plan
           </button>
         </div>
         <div className="plan">
-          <h2>Plus</h2>
-          <p>$30/month</p>
+          <h2>Elite Edge</h2>
+          <p>$15/month</p>
           <ul>
             <li>Plus Benefit 1</li>
             <li>Plus Benefit 2</li>
@@ -102,7 +102,7 @@ const PricingPlan = () => {
           </ul>
           <button 
             className="select-plan-btn" 
-            onClick={() => handleSelectPlan('Plus' , 'P-5BJ936829D7221634M23Z56Y')}
+            onClick={() => handleSelectPlan('Elite Edge' , 'P-0A750503FW457660WM27FBOI')}
           >
             Select Plan
           </button>
