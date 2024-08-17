@@ -56,41 +56,41 @@ const PaymentSuccess = () => {
     }
   };
 
-  const setPaymenDetails = async () => {
-    try {
+  // const setPaymenDetails = async () => {
+  //   try {
 
-      const response = await axios.post(
-        "https://aipoool-convoai-backend.onrender.com/api/setPaymentDetails",
-        { planId : userdata.plan_id , 
-          subscriptionId: userdata.id , 
-          planType: userdata.plan_name, 
-          planDescription: userdata.plan_description,
-          planStatus: userdata.status, 
-          statusUpdateTime: userdata.status_update_time,
-          startTime: userdata.start_time, 
-          nextBillTime: userdata?.billing_info?.next_billing_time, 
-          paymentEmail: userdata?.subscriber?.email_address, 
-          subscriberAddress: subscriberAddress, 
-          subscriberId: userdata.subscriber.payer_id, 
-        }, // Sending planId in the request body
-        {
-          headers: {
-            Authorization: `Bearer ${userjwtToken}`, // Send the token in the Authorization header
-          },
-          withCredentials: true, // Include credentials if necessary (cookies, etc.)
-        }
-      );
+  //     const response = await axios.post(
+  //       "https://aipoool-convoai-backend.onrender.com/api/setPaymentDetails",
+  //       { planId : userdata.plan_id , 
+  //         subscriptionId: userdata.id , 
+  //         planType: userdata.plan_name, 
+  //         planDescription: userdata.plan_description,
+  //         planStatus: userdata.status, 
+  //         statusUpdateTime: userdata.status_update_time,
+  //         startTime: userdata.start_time, 
+  //         nextBillTime: userdata?.billing_info?.next_billing_time, 
+  //         paymentEmail: userdata?.subscriber?.email_address, 
+  //         subscriberAddress: subscriberAddress, 
+  //         subscriberId: userdata.subscriber.payer_id, 
+  //       }, // Sending planId in the request body
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${userjwtToken}`, // Send the token in the Authorization header
+  //         },
+  //         withCredentials: true, // Include credentials if necessary (cookies, etc.)
+  //       }
+  //     );
   
-      if (response.data && response.data.paypalUrl) {
-        window.location.href = response.data.paypalUrl; // Redirect to PayPal URL
-      }
+  //     if (response.data && response.data.paypalUrl) {
+  //       window.location.href = response.data.paypalUrl; // Redirect to PayPal URL
+  //     }
   
-      console.log("Subscription successful", response.data.paypalUrl);
+  //     console.log("Subscription successful", response.data.paypalUrl);
   
-    } catch (error) {
-      console.error("Error during subscription:", error);
-    }
-  };
+  //   } catch (error) {
+  //     console.error("Error during subscription:", error);
+  //   }
+  // };
 
   console.log("userdata here ::: " , userdata); 
 
@@ -122,11 +122,11 @@ useEffect(() => {
   }
 }, [userjwtToken, subscriptionId]); // Run when userjwtToken and subscriptionId are available
 
-useEffect(() => {
-  if (userdata && Object.keys(userdata).length > 0) {
-    setPaymenDetails();
-  }
-}, [userdata]); // Run when userdata is populated
+// useEffect(() => {
+//   if (userdata && Object.keys(userdata).length > 0) {
+//     setPaymenDetails();
+//   }
+// }, [userdata]); // Run when userdata is populated
 
 
   // setting the subscription data into the db 
