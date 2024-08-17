@@ -72,9 +72,10 @@ const PricingPlan = () => {
           </ul>
           <button 
             className="select-plan-btn" 
-            onClick={() => handleSelectPlan('Starter Spark' , 'P-2HX858041N255753NM27E44I')}
+            onClick={() => handleSelectPlan('Basic Plan' , 'P-62X84022270738141M3AEMJQ')}
           >
             Select Plan
+
           </button>
         </div>
         <div className="plan">
@@ -87,7 +88,7 @@ const PricingPlan = () => {
           </ul>
           <button 
             className="select-plan-btn" 
-            onClick={() => handleSelectPlan('Pro Pulse' , 'P-4KB03423V2528092MM27FARY')}
+            onClick={() => handleSelectPlan('Pro Plan' , 'P-18M17441WN664934YM3AERVY')}
           >
             Select Plan
           </button>
@@ -102,7 +103,7 @@ const PricingPlan = () => {
           </ul>
           <button 
             className="select-plan-btn" 
-            onClick={() => handleSelectPlan('Elite Edge' , 'P-0A750503FW457660WM27FBOI')}
+            onClick={() => handleSelectPlan('Plus Plan' , 'P-1BH78296YM9583120M3AETKI')}
           >
             Select Plan
           </button>
