@@ -3,7 +3,7 @@ import React from 'react';
 function Login() {
 
   const handleGoogleLogin = () => {
-    window.location.href = "https://convoai-aipoool.onrender.com/auth/google/url";
+    window.location.href = "https://aipoool-convoai-backend.onrender.com/auth/google/url";
   };
 
   return (
