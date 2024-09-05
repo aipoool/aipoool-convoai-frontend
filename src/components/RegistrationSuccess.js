@@ -107,6 +107,7 @@ function RegistrationSuccess() {
       decryptToken(encryptedTokenWithIv)
       .then(async jwtToken => {
         // Decode the token to get the payload data
+        console.log("jwtToken", jwtToken);
         setUserjwt(jwtToken);
         const tokenData = decodeJwtToken(jwtToken);
         setUserdata(tokenData);
@@ -117,7 +118,7 @@ function RegistrationSuccess() {
           {
             type: "convoai-login-data",
             info: tokenData,
-            jwtToken: userjwt,
+            jwtToken: jwtToken,
           },
           function (response) {
             if (!response.success) {
