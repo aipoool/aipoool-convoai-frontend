@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './components/Login';
+import LoginFailed from './components/LoginFailed';
 import RegistrationSuccess from './components/RegistrationSuccess';
 import PricingPlan from './components/PricingPlan';
 import PaymentSuccess from './components/Success';
@@ -13,6 +14,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/login-failed" element={<LoginFailed />} />
         <Route path="/registration-success" element={<RegistrationSuccess />} />
         <Route path="/pricing" element={<PricingPlan />} />
         <Route path="/payment-success" element={<PaymentSuccess />} />
